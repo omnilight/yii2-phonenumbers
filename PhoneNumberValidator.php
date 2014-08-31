@@ -34,6 +34,8 @@ class PhoneNumberValidator extends Validator
      */
     protected function validateValue($value)
     {
+        if (trim($value) == '')
+            return null;
         try {
             $numberProto = self::phoneUtil()->parse($value, $this->defaultRegion);
         } catch (NumberParseException $e) {

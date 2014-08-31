@@ -60,7 +60,11 @@ class PhoneNumberBehavior extends Behavior
      */
     public function onBeforeValidate($event)
     {
-        $validator = new PhoneNumberValidator();
+        /** @var PhoneNumberValidator $validator */
+        $validator = \Yii::createObject([
+            'class' => PhoneNumberValidator::className(),
+            'defaultRegion' => $this->defaultRegion,
+        ]);
         foreach ($this->attributes as $localAttribute => $dbAttribute) {
             $validator->validateAttribute($this->owner, $localAttribute);
         }

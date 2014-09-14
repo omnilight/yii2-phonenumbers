@@ -1,7 +1,7 @@
 {
     "name": "omnilight/yii2-phonenumbers",
     "description": "Provides phone number parsing and transform behaviors and validators",
-    "keywords": ["yii", "framework", "phone"],
+    "keywords": ["yii2", "phone", "mobile"],
     "minimum-stability": "dev",
     "authors": [
         {

@@ -66,7 +66,8 @@ class PhoneNumberBehavior extends Behavior
             'defaultRegion' => $this->defaultRegion,
         ]);
         foreach ($this->attributes as $localAttribute => $dbAttribute) {
-            $validator->validateAttribute($this->owner, $localAttribute);
+            if ($this->isLocalValueAssigned($localAttribute))
+                $validator->validateAttribute($this->owner, $localAttribute);
         }
     }
 
@@ -99,7 +100,7 @@ class PhoneNumberBehavior extends Behavior
      */
     public function getLocalValue($attributeLocal)
     {
-        if (isset($this->_localValues[$attributeLocal])) {
+        if ($this->isLocalValueAssigned($attributeLocal)) {
             return $this->_localValues[$attributeLocal];
         } else {
             $attributeValue = $this->owner->{$this->attributes[$attributeLocal]};
@@ -144,6 +145,15 @@ class PhoneNumberBehavior extends Behavior
         } else {
             return;
         }
+    }
+
+    /**
+     * @param string $attributeLocal
+     * @return bool
+     */
+    protected function isLocalValueAssigned($attributeLocal)
+    {
+        return isset($this->_localValues[$attributeLocal]);
     }
 
     public function canGetProperty($name, $checkVars = true)

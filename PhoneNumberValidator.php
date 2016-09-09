@@ -14,6 +14,23 @@ use yii\validators\Validator;
 class PhoneNumberValidator extends Validator
 {
     /**
+     * @const Simple validation of the phone number by isValid
+     */
+    const VALID = 1;
+
+    /**
+     * @const Validation for the specified region [[defaultRegion]]
+     */
+    const VALID_FOR_REG = 2;
+    
+
+    /**
+     * @var Type of validation: simple isValid or validation for region specified through [[defaultRegion]].
+     * The default is [[self::VALID]] (simple validation)
+     */
+    public $validationType = self::VALID;
+    
+    /**
      * @var string country code that is used for the phone numbers
      */
     public $defaultRegion;
@@ -42,8 +59,14 @@ class PhoneNumberValidator extends Validator
             return [$this->message, []];
         }
 
-        if (self::phoneUtil()->isValidNumberForRegion($numberProto, $this->defaultRegion) == false)
+        if ($this->validationType === static::VALID &&
+                self::phoneUtil()->isValidNumber($numberProto, $this->defaultRegion) == false)
             return [$this->message, []];
+
+        if ($this->validationType === static::VALID_FOR_REG &&
+                self::phoneUtil()->isValidNumberForRegion($numberProto, $this->defaultRegion) == false)
+            return [$this->message, []];
+
         return null;
     }
 
